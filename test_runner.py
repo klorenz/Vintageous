@@ -44,6 +44,7 @@ TESTS_CONSTANTS = 'Vintageous.tests.vi.test_constants'
 TESTS_CMD_DATA = 'Vintageous.tests.vi.test_cmd_data'
 TESTS_KEYMAP = 'Vintageous.tests.test_keymap'
 TESTS_RUN = 'Vintageous.tests.test_run'
+TESTS_MODELINES = 'Vintageous.tests.test_modelines'
 TESTS_SEL = 'Vintageous.tests.sel.test_sel_orientation'
 
 TESTS_TEXT_OBJECTS = 'Vintageous.tests.vi.test_text_objects'
@@ -82,6 +83,7 @@ TESTS_EX_CMDS_SHELL_OUT = 'Vintageous.tests.ex.test_shell_out'
 TESTS_UNITS_WORD = 'Vintageous.tests.vi.test_word'
 TESTS_UNITS_BIG_WORD = 'Vintageous.tests.vi.test_big_word'
 TESTS_UNITS_WORD_END = 'Vintageous.tests.vi.test_word_end'
+
 
 TESTS_CMDS_ALL_SUPPORT = [TESTS_CMDS_SET_ACTION, TESTS_CMDS_SET_MOTION]
 
@@ -145,6 +147,7 @@ test_suites = {
 
         'state': ['_pt_run_tests', [TESTS_STATE]],
         'run': ['_pt_run_tests', [TESTS_RUN]],
+        'modelines': ['_pt_run_tests', [TESTS_MODELINES]],
 
         'constants': ['_pt_run_tests', [TESTS_CONSTANTS]],
 
@@ -161,6 +164,7 @@ test_suites = {
         '_sel_': ['_pt_run_tests', TESTS_SEL_RELATED],
 
         'objects': ['_pt_run_tests', TESTS_ALL_TEXT_OBJECTS],
+
 }
 
 
