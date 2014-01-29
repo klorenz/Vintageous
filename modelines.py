@@ -20,7 +20,7 @@ MODELINES_REG_SIZE = MAX_LINES_TO_CHECK * LINE_LENGTH
 MODELINE_TYPE_1  = re.compile(r"[\x20\t](st|sublime|vim):\x20?set\x20(.*):.*$")
 MODELINE_TYPE_2  = re.compile(r"[\x20\t](st|sublime|vim):(.*):.*$")
 
-MONITORED_OUTPUT_PANELS = ['exec']
+MONITORED_OUTPUT_PANELS = ['exec', 'foobar']
 
 KEY_VALUE = re.compile(r"""(?x) \s*
     (?P<key>\w+)  \s* (?P<op>\+?=)  \s*  (?P<value>
@@ -77,10 +77,6 @@ def get_language_files(ignored_packages, *paths):
                 result.append(f)
 
     return result
-
-
-def get_output_panel(name):
-    return sublime.active_window().create_output_panel(name)
 
 
 def is_modeline(prefix, line):
@@ -295,7 +291,6 @@ class ExecuteSublimeTextModeLinesCommand(sublime_plugin.EventListener):
     def do_modelines(self, view):
         settings = view.settings()
         keys = set(settings.get('vintageous_modeline_keys', []))
-        print("keys: %s" % keys)
         new_keys = set()
 
         for setter, name, value in gen_modeline_options(view):
@@ -326,7 +321,7 @@ class ExecuteSublimeTextModeLinesCommand(sublime_plugin.EventListener):
 
         settings.set('vintageous_modeline_keys', list(new_keys))
 
-
+    monitored_output_panels = {}
     def on_load(self, view):
         self.do_modelines(view)
 
@@ -334,21 +329,22 @@ class ExecuteSublimeTextModeLinesCommand(sublime_plugin.EventListener):
         self.do_modelines(view)
 
     def on_modified(self, view):
-        monitored_output_panels = view.settings().get('vintageous_monitored_output_panels', MONITORED_OUTPUT_PANELS)
+        # handle output panel
+        settings = view.settings()
 
-        for p in monitored_output_panels:
-            v = get_output_panel(p)
+        if not settings.has('result_file_regex'):
+            return
 
-            if v.id() != view.id():
-                continue
+        if settings.get('vintageous_output_panel_done', False):
+            return
 
-            if v.settings().get('vintageous_output_panel_done', False):
-                continue
+        if view.size() > MODELINES_REG_SIZE:
+            settings.set('vintageous_output_panel_done', True)
+            self.do_modelines(view)
+            return
 
-            if v.size() > MODELINES_REG_SIZE:
-                v.settings().set('vintageous_output_panel_done', True)
-                self.do_modelines(v)
-                continue
+        if not view.size():
+            return
 
-            self.do_modelines(v)
+        self.do_modelines(view)
 
