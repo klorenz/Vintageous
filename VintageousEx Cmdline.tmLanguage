@@ -7,6 +7,88 @@
 	<key>patterns</key>
 	<array>
 		<dict>
+			<key>begin</key>
+			<string>(?x) ^ (:) (?: (\d+|\.|'&lt;) (?: (,) (\d+|\.|\$|'&gt;)? )? | (%) ) (s(?:ubstitute)?)</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.excmdline</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.other.symbol.excmdline</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.excmdline</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>constant.other.symbol.excmdline</string>
+				</dict>
+				<key>5</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.excmdline</string>
+				</dict>
+				<key>6</key>
+				<dict>
+					<key>name</key>
+					<string>support.function.excmdline</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>$</string>
+			<key>name</key>
+			<string>meta.function-call.range.vim</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#vim-command-substitution</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.excmdline</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>constant.other.symbol.excmdline</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.excmdline</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>constant.other.symbol.excmdline</string>
+				</dict>
+				<key>5</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.excmdline</string>
+				</dict>
+			</dict>
+			<key>match</key>
+			<string>(?x) ^ (:) (?: (\d+|\.|'&lt;) (?: (,) (\d+|\.|\$|'&gt;)? )? | (%) )</string>
+			<key>name</key>
+			<string>meta.function-call.range.vim</string>
+		</dict>
+		<dict>
 			<key>captures</key>
 			<dict>
 				<key>1</key>
@@ -32,8 +114,103 @@
 			</dict>
 			<key>match</key>
 			<string>^(:)(?:(\d+)|(cd(?:d)?|w(?:rite|q|all)?|e(?:dit|new|xit)?|pw(?:d)?|buffers|files|ls|reg(?:isters)?|map|ab(?:breviate)?|q(:?uit|all)?|r(?:ead)?|as(?:cii)?|f(?:ile)?|move|co(?:py)?|t(?:abfirst|abprev|abedit|abe|abnext|abn|ablast|abl|abonly|abo)?|setl(:?ocal)?|se(?:t)?|s(?:ubstitute|hell|h)?|&amp;&amp;|d(?:elete)?|g(?:lobal)?|p(?:rint)?|P(?:rint)?|bro(?:owse)?|cq(?:uit)?|x(?:it)?|on(?:ly)?|new|y(?:ank)?|(?:un)?vs(?:plit)?)(!)?)?</string>
+			<key>name</key>
+			<string>meta.function-call.vim</string>
 		</dict>
 	</array>
+	<key>repository</key>
+	<dict>
+		<key>vim-command</key>
+		<dict>
+			<key>match</key>
+			<string>cd(?:d)?|w(?:rite|q|all)?|e(?:dit|new|xit)?|pw(?:d)?|buffers|files|ls|reg(?:isters)?|map|ab(?:breviate)?|q(:?uit|all)?|r(?:ead)?|as(?:cii)?|f(?:ile)?|move|co(?:py)?|t(?:abfirst|abprev|abedit|abe|abnext|abn|ablast|abl|abonly|abo)?|setl(:?ocal)?|se(?:t)?|s(?:ubstitute|hell|h)?|&amp;&amp;|d(?:elete)?|g(?:lobal)?|p(?:rint)?|P(?:rint)?|bro(?:owse)?|cq(?:uit)?|x(?:it)?|on(?:ly)?|new|y(?:ank)?|(?:un)?vs(?:plit)?</string>
+			<key>name</key>
+			<string>support.function.excmdline</string>
+		</dict>
+		<key>vim-command-substitution</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>(/)(?=[^/]*$)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.excmdline</string>
+						</dict>
+					</dict>
+					<key>contentName</key>
+					<string>string.regexp.excmdline</string>
+					<key>end</key>
+					<string>$</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>source.regexp</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>(/)</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.excmdline</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.excmdline</string>
+						</dict>
+					</dict>
+					<key>contentName</key>
+					<string>string.regexp.excmdline</string>
+					<key>end</key>
+					<string>(?x)
+(/) ((?:\\.|[^/]+)*) 
+(?: (/) (giI|gIi|iIg|iIg|Iig|Igi|gi|gI|ig|iI|Ig|Ii|g|i|I)? | )
+$</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.excmdline</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>string.quoted.excmdline</string>
+						</dict>
+						<key>3</key>
+						<dict>
+							<key>name</key>
+							<string>keyword.control.excmdline</string>
+						</dict>
+						<key>4</key>
+						<dict>
+							<key>name</key>
+							<string>storage.modifier.excmdline</string>
+						</dict>
+					</dict>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>source.regexp</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>scopeName</key>
 	<string>text.excmdline</string>
 	<key>uuid</key>

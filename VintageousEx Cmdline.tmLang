@@ -1,0 +1,104 @@
+uuid: eb9bb9a2-ab05-4edf-aee1-22d79cc9d9b0
+name: Vintageous Command Line
+scopeName: text.excmdline
+
+VIM_COMMANDS =
+    cd(?:d)?
+    w(?:rite|q|all)?
+    e(?:dit|new|xit)?
+    pw(?:d)?
+    buffers
+    files
+    ls
+    reg(?:isters)?
+    map
+    ab(?:breviate)?
+    q(:?uit|all)?
+    r(?:ead)?
+    as(?:cii)?
+    f(?:ile)?
+    move
+    co(?:py)?
+    t(?:abfirst|abprev|abedit|abe|abnext|abn|ablast|abl|abonly|abo)?
+    setl(:?ocal)?
+    se(?:t)?
+    s(?:ubstitute|hell|h)?
+    &&
+    d(?:elete)?
+    g(?:lobal)?
+    p(?:rint)?
+    P(?:rint)?
+    bro(?:owse)?
+    cq(?:uit)?
+    x(?:it)?
+    on(?:ly)?
+    new
+    y(?:ank)?
+    (?:un)?vs(?:plit)?
+
+vim_commands = {alternatives: {VIM_COMMANDS}}
+
+range_cmd = (:) (?: (\d+|\.|'<) (?: (,) (\d+|\.|\$|'>)? )? | (%) )
+
+MAIN
+    meta.function-call.range.vim
+        (?x) ^ {range_cmd} (s(?:ubstitute)?)
+        1: keyword.excmdline
+        2: constant.other.symbol.excmdline
+        3: keyword.excmdline
+        4: constant.other.symbol.excmdline
+        5: keyword.excmdline
+        6: support.function.excmdline
+
+        $
+
+        #vim-command-substitution
+
+    meta.function-call.range.vim
+        (?x) ^ {range_cmd} 
+        1: keyword.excmdline
+        2: constant.other.symbol.excmdline
+        3: keyword.excmdline
+        4: constant.other.symbol.excmdline
+        5: keyword.excmdline
+
+
+    meta.function-call.vim
+        ^(:)(?:(\d+)|({vim_commands})(!)?)?
+        1: keyword.excmdline
+        2: constant.numeric.excmdline
+        3: support.function.excmdline
+        4: keyword.excmdline
+
+    # TODO
+    # highlight SUBSTTUTION COMMANDs and other
+vim-command-substitution
+    <string.regexp.excmdline>
+        (/)(?=[^/]*$)
+        1: keyword.control.excmdline
+
+        $
+
+        #source.regexp
+
+    <string.regexp.excmdline>
+        (/)
+        1: support.function.excmdline
+        2: keyword.control.excmdline
+
+        (?x)
+            (/) ((?:\\.|[^/]+)*) 
+            (?: (/) (giI|gIi|iIg|iIg|Iig|Igi|gi|gI|ig|iI|Ig|Ii|g|i|I)? | )
+            $
+        1: keyword.control.excmdline
+        2: string.quoted.excmdline
+        3: keyword.control.excmdline
+        4: storage.modifier.excmdline
+
+        #source.regexp
+
+
+vim-command
+    support.function.excmdline
+        {alternatives: {VIM_COMMANDS}}
+
